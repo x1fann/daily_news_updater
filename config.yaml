@@ -1,0 +1,16 @@
+rss_sources:
+  - name: "塔斯社"
+    url: "https://tass.com/rss/v2.xml"
+  - name: "路透社"
+    url: "https://rss-bridge.lewd.tech/?action=display&bridge=ReutersBridge&feed=home%2Ftopnews&format=Atom"
+
+llm:
+  api_key: "" # ds官方
+  base_url: "https://api.deepseek.com"
+  model: "deepseek-chat"
+
+feishu:
+  app_id: ""
+  app_secret: ""
+  app_token: ""
+  table_id: ""
