@@ -47,13 +47,20 @@ def summarize_news():
         
         # 截取前 5000 个字符以避免过长
         content_snippet = item.get('content', '')[:5000]
-        
-        single_prompt = f"""请简要总结这篇新闻的内容，注意保留核心事件和观点。标题: {item.get('title')}来源: {item.get('source')}正文:{content_snippet}"""
+        single_prompt = f"""根据以下新闻内容，生成一条结构化简要摘要。严格按照以下结构输出：
+                            - 标题
+                            - 核心事件：用一句话说明“发生了什么事”
+                            - 关键事实：以要点列出 3–5 条最重要的事实（人物、行为、数据、结果）
+                            - 主要相关方：涉及的国家 / 机构 / 人物
+                            - 时间与地点
+                        标题: {item.get('title')}
+                        来源: {item.get('source')}
+                        正文:{content_snippet}"""
         try:
             response = client.chat.completions.create(
                 model=llm_config.get('model', 'deepseek-chat'),
                 messages=[
-                    {"role": "system", "content": "你是一个经验丰富的新闻编辑，擅长总结新闻内容。"},
+                    {"role": "system", "content": "你是一名专业新闻编辑，擅长从新闻报道中抽取关键信息。"},
                     {"role": "user", "content": single_prompt},
                 ],
                 stream=False
@@ -71,14 +78,16 @@ def summarize_news():
     print("\n正在生成最终汇总报告...")
     combined_summaries = "\n\n".join(summaries)
     
-    final_system_prompt = "你是一个专业的政治经济学分析专家。请根据来自于不同新闻机构提供的多条新闻摘要，进行深度的综合总结和分析。请将它们按主题分类（如：美国政治、俄乌冲突、拉美局势等），提炼出关键动态和影响。"
-    final_user_prompt = f"以下是各条新闻的简要摘要：\n\n{combined_summaries}\n\n请帮我生成一份综合简报。"
-
+    final_user_prompt = f"""根据以下多条新闻摘要\n\n{combined_summaries}\n\n，完成以下任务：
+                            1.按主题/地区/冲突或议题分类（如：美国政治、俄乌冲突、中东局势等）
+                            2.在每类中合并重复事件，重点提炼关键事件和动态。
+                            3.简要一句话分析这些动态可能的后续影响。
+                            生成一份结构清晰的新闻简报。"""
     try:
         response = client.chat.completions.create(
             model=llm_config.get('model', 'deepseek-chat'),
             messages=[
-                {"role": "system", "content": final_system_prompt},
+                {"role": "system", "content": "你是一名政治与国际经济领域的分析专家，擅长从多源新闻中分析关键动态。"},
                 {"role": "user", "content": final_user_prompt},
             ],
             stream=False
@@ -96,11 +105,9 @@ def summarize_news():
         print(f"生成最终汇总失败: {e}")
 
 def save_summary(content):
-    """保存总结结果到文件"""
     output_dir = 'data'
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, 'summary.txt')
-    
     try:
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(content)
