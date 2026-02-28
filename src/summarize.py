@@ -89,7 +89,7 @@ def summarize_news():
         response = client.chat.completions.create(
             model=llm_config.get('model', 'deepseek-chat'),
             messages=[
-                {"role": "system", "content": "你是一名政治与国际经济领域的分析专家，擅长从多源新闻中分析关键动态。"},
+                {"role": "system", "content": "你是一名政治与国际经济领域的分析专家，擅长从多源新闻中分析关键动态。今天是{current_date}。"},
                 {"role": "user", "content": final_user_prompt},
             ],
             stream=False
