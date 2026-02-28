@@ -4,6 +4,8 @@ import yaml
 from openai import OpenAI
 from datetime import datetime
 
+current_date = datetime.now().strftime("%Y年%m月%d日")
+
 def load_config(config_path='config.yaml'):
     try:
         with open(config_path, 'r', encoding='utf-8') as f:
@@ -58,7 +60,6 @@ def summarize_news():
                         来源: {item.get('source')}
                         正文:{content_snippet}"""
         try:
-            current_date = datetime.now().strftime("%Y年%m月%d日")
             response = client.chat.completions.create(
                 model=llm_config.get('model', 'deepseek-chat'),
                 messages=[
@@ -89,7 +90,7 @@ def summarize_news():
         response = client.chat.completions.create(
             model=llm_config.get('model', 'deepseek-chat'),
             messages=[
-                {"role": "system", "content": "你是一名政治与国际经济领域的分析专家，擅长从多源新闻中分析关键动态。今天是{current_date}。"},
+                {"role": "system", "content": f"你是一名政治与国际经济领域的分析专家，擅长从多源新闻中分析关键动态。今天是{current_date}。"},
                 {"role": "user", "content": final_user_prompt},
             ],
             stream=False
