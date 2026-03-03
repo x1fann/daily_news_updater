@@ -89,7 +89,7 @@ def process_feed(source, session):
 
     print(f"\n>>> 正在获取: {name} ({url})")
     feed = feedparser.parse(url)
-    for i, entry in enumerate(feed.entries[:10]):
+    for i, entry in enumerate(feed.entries[:7]):
         title = entry.get('title', '无标题')
         link = entry.get('link', '')
         print(f"  {i+1}. {title}\n     链接: {link}")

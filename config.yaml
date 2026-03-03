@@ -1,9 +1,10 @@
 rss_sources:
-  - name: "塔斯社"
-    url: "https://tass.com/rss/v2.xml"
-  - name: "路透社"
-    url: "https://www.bing.com/news/search?q=site:reuters.com&format=rss"
-
+  - name: "TASS"
+    url: "https://www.bing.com/news/search?q=site:tass.com&format=rss"
+  - name: "BBC"
+    url: "https://feeds.bbci.co.uk/news/world/rss.xml"
+  - name: "CNBC"
+    url: "https://www.cnbc.com/id/100727362/device/rss/rss.html"
 llm:
   api_key: "" # ds官方
   base_url: "https://api.deepseek.com"
