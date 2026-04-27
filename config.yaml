@@ -8,7 +8,7 @@ rss_sources:
 llm:
   api_key: "" # ds官方
   base_url: "https://api.deepseek.com"
-  model: "deepseek-chat"
+  model: "deepseek-v4-flash"
 
 feishu:
   app_id: ""
